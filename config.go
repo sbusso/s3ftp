@@ -1,35 +1,35 @@
 package main
 
 import (
-	"io/ioutil"
-	"github.com/BurntSushi/toml"
+	"os"
+	"strconv"
 )
 
-const DefaultConfigPath = "./yig-ftp.toml"
+const DefaultConfigPath = "./ftp.toml"
 
-var globalConfig Config
+func ParseConfig() (*Config, error) {
+	var globalConfig Config
+	globalConfig.Host = os.Getenv("HOST")
+	globalConfig.Port, _ = strconv.Atoi(os.Getenv("PORT"))
 
-func ParseConfig() error {
-	data, err := ioutil.ReadFile(DefaultConfigPath)
-	if err != nil {
-		if err != nil {
-			panic("Cannot open yig-ftp.toml")
-		}
-	}
-	var c Config
-	_, err = toml.Decode(string(data), &c)
-	if err != nil {
-		panic("load yig-ftp.toml error: " + err.Error())
-	}
-	globalConfig.Host = c.Host
-	globalConfig.Port = c.Port
-	globalConfig.Endpoint = c.Endpoint
-	return nil
+	globalConfig.AWSRegion = os.Getenv("REGION")
+	globalConfig.AWSBucketName = os.Getenv("BUCKET_NAME")
+	globalConfig.AWSAccessKeyID = os.Getenv("ACCESS_KEY_ID")
+	globalConfig.AWSSecretKey = os.Getenv("SECRET_ACCESS_KEY")
+	globalConfig.Username = os.Getenv("USERNAME")
+	globalConfig.Password = os.Getenv("PASSWORD")
+
+	return &globalConfig, nil
 }
 
 type Config struct {
-	Host string `toml:"host"`
-	Port int    `toml:"port"`
+	Host string
+	Port int
 
-	Endpoint  string `toml:"endpoint"` // Domain name of YIG
+	AWSRegion      string
+	AWSBucketName  string
+	AWSAccessKeyID string
+	AWSSecretKey   string
+	Username       string
+	Password       string
 }

@@ -1,26 +1,38 @@
 package main
 
 import (
-	"github.com/koofr/graval"
-	"github.com/journeymidnight/yig-s3ftp/s3adapter"
 	"log"
+
+	"github.com/joho/godotenv"
+	"github.com/koofr/graval"
+	"github.com/sbusso/s3ftp/s3adapter"
 )
 
 func main() {
-	ParseConfig()
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Error loading .env file")
+	}
+
+	config, _ := ParseConfig()
 
 	factory := &s3adapter.S3DriverFactory{
-			AWSEndpoint:        globalConfig.Endpoint,
+		AWSRegion:      config.AWSRegion,
+		AWSBucketName:  config.AWSBucketName,
+		AWSAccessKeyID: config.AWSAccessKeyID,
+		AWSSecretKey:   config.AWSSecretKey,
+		Username:       config.Username,
+		Password:       config.Password,
 	}
 
 	server := graval.NewFTPServer(&graval.FTPServerOpts{
-		ServerName: "yig-ftp",
+		ServerName: "s3ftp",
 		Factory:    factory,
-		Hostname:   globalConfig.Host,
-		Port:       globalConfig.Port,
+		Hostname:   config.Host,
+		Port:       config.Port,
 		PassiveOpts: &graval.PassiveOpts{
-			ListenAddress: globalConfig.Host,
-			NatAddress:    globalConfig.Host,
+			ListenAddress: config.Host,
+			NatAddress:    config.Host,
 			PassivePorts: &graval.PassivePorts{
 				Low:  42000,
 				High: 45000,
@@ -28,10 +40,9 @@ func main() {
 		},
 	})
 
-	log.Printf("FTP2S3 server listening on %s:%d", globalConfig.Host, globalConfig.Port)
-	log.Printf("Access: ftp://%s:%d/", globalConfig.Host, globalConfig.Port)
+	log.Printf("S3FTP server listening on %s:%d", config.Host, config.Port)
 
-	err := server.ListenAndServe()
+	err = server.ListenAndServe()
 
 	if err != nil {
 		log.Fatal(err)
