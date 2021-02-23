@@ -67,10 +67,12 @@ func main() {
 	p, _ := strconv.Atoi(PORT)
 
 	server := graval.NewFTPServer(&graval.FTPServerOpts{
-		ServerName: "s3ftp",
-		Factory:    factory,
-		Hostname:   HOST,
-		Port:       p,
+		ServerName:  "s3ftp",
+		Factory:     factory,
+		Hostname:    HOST,
+		Port:        p,
+		PasvMinPort: 60200,
+		PasvMaxPort: 60300,
 		// PassiveOpts: &graval.PassiveOpts{
 		// 	ListenAddress: config.Host,
 		// 	NatAddress:    config.Host,
