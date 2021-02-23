@@ -1,4 +1,4 @@
-include .env
+-include .env
 GO ?= go
 DIST=dist
 PLATFORM=linux
