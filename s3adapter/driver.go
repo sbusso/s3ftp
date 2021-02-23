@@ -118,7 +118,7 @@ func (d *S3Driver) Bytes(path string) int64 {
 }
 
 // ModifiedTime returns the LastModifiedTime for the path if the key exists
-func (d *S3Driver) ModifiedTime(path string) (time.Time, bool) {
+func (d *S3Driver) ModifiedTime(path string) (time.Time, error) {
 	// svc := d.s3service()
 
 	// path = strings.TrimPrefix(path, "/")
@@ -137,7 +137,7 @@ func (d *S3Driver) ModifiedTime(path string) (time.Time, bool) {
 
 	// return *resp.LastModified, true
 
-	return time.Now(), false
+	return time.Now(), nil
 }
 
 // ChangeDir “changes directories” on S3 if there are files under the given path
@@ -167,7 +167,7 @@ func (d *S3Driver) ChangeDir(path string) bool {
 }
 
 // DirContents lists “directory” contents on S3
-func (d *S3Driver) DirContents(path string) ([]os.FileInfo, bool) {
+func (d *S3Driver) DirContents(path string) []os.FileInfo {
 	// moreObjects := true
 	// var objects []*s3.Object
 
@@ -221,7 +221,7 @@ func (d *S3Driver) DirContents(path string) ([]os.FileInfo, bool) {
 
 	// return files, true
 
-	return []os.FileInfo{}, true
+	return []os.FileInfo{}
 }
 
 // DeleteDir would delete a directory, but isn't currently implemented
@@ -264,7 +264,7 @@ func (d *S3Driver) MakeDir(path string) bool {
 }
 
 // GetFile returns a reader for the given path on S3
-func (d *S3Driver) GetFile(path string, position int64) (io.ReadCloser, bool) {
+func (d *S3Driver) GetFile(path string) (io.ReadCloser, error) {
 	// svc := d.s3service()
 
 	// path = strings.TrimPrefix(path, "/")
@@ -282,7 +282,7 @@ func (d *S3Driver) GetFile(path string, position int64) (io.ReadCloser, bool) {
 
 	// return resp.Body, true
 
-	return nil, false
+	return nil, nil
 }
 
 // PutFile uploads a file to S3

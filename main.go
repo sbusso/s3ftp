@@ -4,8 +4,8 @@ import (
 	"log"
 
 	"github.com/joho/godotenv"
-	"github.com/koofr/graval"
 	"github.com/sbusso/s3ftp/s3adapter"
+	"github.com/yob/graval"
 )
 
 func main() {
@@ -30,14 +30,14 @@ func main() {
 		Factory:    factory,
 		Hostname:   config.Host,
 		Port:       config.Port,
-		PassiveOpts: &graval.PassiveOpts{
-			ListenAddress: config.Host,
-			NatAddress:    config.Host,
-			PassivePorts: &graval.PassivePorts{
-				Low:  42000,
-				High: 45000,
-			},
-		},
+		// PassiveOpts: &graval.PassiveOpts{
+		// 	ListenAddress: config.Host,
+		// 	NatAddress:    config.Host,
+		// 	PassivePorts: &graval.PassivePorts{
+		// 		Low:  42000,
+		// 		High: 45000,
+		// 	},
+		// },
 	})
 
 	log.Printf("S3FTP server listening on %s:%d", config.Host, config.Port)
