@@ -24,13 +24,13 @@ jobs:
       - name: Run Makefile
         env:
           TOKEN: ${{ secrets.TOKEN }}
-          BUCKET_NAME: ${{BUCKET_NAME }}
-          ACCESS_KEY_ID: ${{ACCESS_KEY_ID}}
-          SECRET_ACCESS_KEY: ${{SECRET_ACCESS_KEY}}
+          BUCKET_NAME: ${{secrets.BUCKET_NAME }}
+          ACCESS_KEY_ID: ${{secrets.ACCESS_KEY_ID}}
+          SECRET_ACCESS_KEY: ${{secrets.SECRET_ACCESS_KEY}}
           SSH_KEY_PATH: ${{secrets.SSH_KEY_PATH}}
-          REGION: ${{REGION}}
-          USERNAME: ${{USERNAME}}
-          PASSWORD: ${{PASSWORD}}
-          HOST: ${{HOST}}
-          PORT: ${{PORT}}
+          REGION: ${{secrets.REGION}}
+          USERNAME: ${{secrets.USERNAME}}
+          PASSWORD: ${{secrets.PASSWORD}}
+          HOST: ${{secrets.HOST}}
+          PORT: ${{secrets.PORT}}
         run: make deploy
