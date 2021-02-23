@@ -29,7 +29,7 @@ all:
 	@echo ""
 
 build::
-	@echo "Building..."
+	@echo "≫ Building..."
 	@CGO_ENABLED=0 GOOS=$(PLATFORM) GOARCH=$(ARCH) $(GO) build -ldflags $(LDFLAGS) -o $(BIN)/$(SERVICE_NAME) *.go
 
 # clean::
@@ -39,7 +39,8 @@ build::
 #   go test ./...
 
 deploy:: build
-	@tar czf - $(BIN)/$(SERVICE_NAME) | $(SSH) 'echo ≫ Backing up old executable...\
+	@echo "≫ Deploying..."
+	tar czf - $(BIN)/$(SERVICE_NAME) | $(SSH) 'echo ≫ Backing up old executable...\
 				&& test -f /srv/$(SERVICE_NAME)/$(SERVICE_NAME)\
 				&& mv /srv/$(SERVICE_NAME)/$(SERVICE_NAME){,.old}\
 				&& echo ≫ Extracting into /srv/$(SERVICE_NAME)/...\
