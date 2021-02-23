@@ -15,7 +15,6 @@ LDFLAGS := "-X main.BUCKET_NAME=$(BUCKET_NAME) \
 SSH_SERVER=$(DEPLOY_SERVER)
 SSH_USER=$(DEPLOY_USER)
 SSH_KEY=$(SSH_KEY_PATH)
-SERVICE_NAME=$(SERVICE_NAME)
 BIN=$(DIST)/$(PLATFORM)/$(ARCH)
 SSH=ssh -i $(SSH_KEY) $(SSH_USER)@$(SSH_SERVER)
 
@@ -40,7 +39,7 @@ build::
 
 deploy:: build
 	@echo "≫ Deploying..."
-	tar czf - $(BIN)/$(SERVICE_NAME) | $(SSH) 'echo ≫ Backing up old executable...\
+	@tar czf - $(BIN)/$(SERVICE_NAME) | $(SSH) 'echo ≫ Backing up old executable...\
 				&& test -f /srv/$(SERVICE_NAME)/$(SERVICE_NAME)\
 				&& mv /srv/$(SERVICE_NAME)/$(SERVICE_NAME){,.old}\
 				&& echo ≫ Extracting into /srv/$(SERVICE_NAME)/...\
