@@ -1,0 +1,36 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks out a copy of your repository on the ubuntu-latest machine
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create SSH key
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ${{secrets.SSH_KEY_PATH}}
+          sudo chmod 600 ${{secrets.SSH_KEY_PATH}}
+          ssh-keyscan -H ${{secrets.DEPLOY_SERVER}} > ~/.ssh/known_hosts
+        shell: bash
+        env:
+          SSH_KEY: ${{secrets.SSH_KEY}}
+          SSH_KEY_PATH: ${{secrets.SSH_KEY_PATH}}
+      - name: Run Makefile
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+          BUCKET_NAME: ${{BUCKET_NAME }}
+          ACCESS_KEY_ID: ${{ACCESS_KEY_ID}}
+          SECRET_ACCESS_KEY: ${{SECRET_ACCESS_KEY}}
+          SSH_KEY_PATH: ${{secrets.SSH_KEY_PATH}}
+          REGION: ${{REGION}}
+          USERNAME: ${{USERNAME}}
+          PASSWORD: ${{PASSWORD}}
+          HOST: ${{HOST}}
+          PORT: ${{PORT}}
+        run: make deploy
