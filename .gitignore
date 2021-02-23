@@ -1,3 +1,5 @@
 *.log
 tmp
 .env
+s3ftp
+dist
