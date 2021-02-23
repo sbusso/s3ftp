@@ -21,7 +21,7 @@ jobs:
         env:
           SSH_KEY: ${{secrets.SSH_KEY}}
           SSH_KEY_PATH: ${{secrets.SSH_KEY_PATH}}
-      - run: echo "SERVICE_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $1}')" >> $GITHUB_ENV
+      - run: echo "SERVICE_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
         shell: bash
       - name: Run Makefile
         env:
